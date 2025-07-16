@@ -491,7 +491,10 @@ def build_app(d, source_dir, flutter_sdk, pubspec_appname, flutter_application_p
                 dep_path = glob.glob(f'{source_dir}/{flutter_application_path}/.dart_tool/flutter_build/*/kernel_snapshot.d')
             else:
                 dart_runtime = f'{flutter_sdk}/bin/cache/dart-sdk/bin/dartaotruntime'
-                frontend_snapshot = f'{flutter_sdk}/bin/cache/artifacts/engine/linux-{clang_build_arch(d)}/frontend_server_aot.dart.snapshot'
+                if clang_build_arch(d) == 'arm64':
+                    frontend_snapshot = f'{flutter_sdk}/bin/cache/dart-sdk/bin/snapshots/frontend_server_aot.dart.snapshot'
+                else:
+                    frontend_snapshot = f'{flutter_sdk}/bin/cache/artifacts/engine/linux-{clang_build_arch(d)}/frontend_server_aot.dart.snapshot'
                 dep_path = glob.glob(f'{source_dir}/{flutter_application_path}/.dart_tool/flutter_build/*/kernel_snapshot_program.d')
 
             cmd = f'{dart_runtime} \
